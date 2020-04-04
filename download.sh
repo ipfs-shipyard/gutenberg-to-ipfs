@@ -2,10 +2,9 @@
 
 set -x
 
-archive=archive
-
 lang="$1"
 format="html"
+archive="archive-$lang"
 
 if [ -z "$lang" -o -z "$format" ]; then
     echo "Usage: ./download <lang>"
@@ -18,6 +17,12 @@ echo "Starting download with get"
 wget -nv -m -H "http://www.gutenberg.org/robot/harvest?filetypes[]=$format&langs[]=$lang"
 
 cd ..
+
+if [ -d index ]; then
+    echo "Index already downloaded. To redownload remove the 'index' folder."
+    exit
+fi
+
 mkdir index
 cd index
 

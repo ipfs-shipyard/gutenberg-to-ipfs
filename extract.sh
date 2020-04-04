@@ -2,9 +2,16 @@
 
 set -e
 
-archive=archive
+lang="$1"
+
+if [ -z "$lang" ]; then
+    echo "Usage: ./extract.sh <lang>"
+    exit
+fi
+
+archive="archive-$lang"
 index="cache/epub"
-dest=ipfs-archive
+dest="ipfs-archive-$lang"
 
 mkdir -p $dest
 
@@ -16,7 +23,7 @@ for b in $books; do
     title=`xml_grep --text_only dcterms:title "$path" | head -n 1 | tr -d '\r' | tr -d '\n'`
     author=`xml_grep dcterms:creator "$path"  | xml_grep --text_only pgterms:name | head -n 1 | tr -d '\r' | tr -d '\n'`
 
-    bookdest="ipfs-archive/$id - $title - $author"
+    bookdest="$dest/$id - $title - $author"
     mkdir -p "$bookdest"
     echo "Unzipping book to $bookdest"
     unzip -qq -o -d "$bookdest" $b

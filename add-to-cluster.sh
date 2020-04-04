@@ -2,9 +2,15 @@
 
 set -e
 
+lang="$1"
 
-folder=ipfs-archive
-added=added.txt
+if [ -z "$lang" ]; then
+    echo "Usage: ./extract.sh <lang>"
+    exit
+fi
+
+folder="ipfs-archive-$lang"
+added="added-$lang.txt"
 # for b in $folder/*; do
 #     echo -n "$b" | grep '\r'
 # done
